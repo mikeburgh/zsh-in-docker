@@ -44,8 +44,14 @@ check_version() {
 }
 
 install_dependencies() {
-    DIST=`check_dist`
-    VERSION=`check_version`
+
+	if [[ $OSTYPE == 'darwin'* ]]; then
+		echo "###### Skipping dependencies for $OSTYPE (macOS)"
+		return
+	fi
+		DIST=`check_dist`
+    	VERSION=`check_version`
+	
     echo "###### Installing dependencies for $DIST"
 
     if [ "`id -u`" = "0" ]; then
@@ -62,6 +68,9 @@ install_dependencies() {
     fi
 
     case $DIST in
+		macos)
+			echo "Skipping install on macOS"
+		;;
         alpine)
             $Sudo apk add --update --no-cache git curl zsh
         ;;
@@ -125,7 +134,7 @@ cd /tmp
 
 # Install On-My-Zsh
 if [ ! -d $HOME/.oh-my-zsh ]; then
-    /bin/sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended
 fi
 
 # Generate plugin list
