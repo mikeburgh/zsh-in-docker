@@ -45,12 +45,12 @@ check_version() {
 
 install_dependencies() {
 
-	if [[ $OSTYPE == 'darwin'* ]]; then
-		echo "###### Skipping dependencies for $OSTYPE (macOS)"
-		return
-	fi
-		DIST=`check_dist`
-    	VERSION=`check_version`
+    if [[ $OSTYPE == 'darwin'* ]]; then
+        echo "###### Skipping dependencies for $OSTYPE (macOS)"
+        return
+    fi
+    DIST=`check_dist`
+    VERSION=`check_version`
 	
     echo "###### Installing dependencies for $DIST"
 
@@ -68,9 +68,6 @@ install_dependencies() {
     fi
 
     case $DIST in
-		macos)
-			echo "Skipping install on macOS"
-		;;
         alpine)
             $Sudo apk add --update --no-cache git curl zsh
         ;;
