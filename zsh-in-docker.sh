@@ -139,6 +139,10 @@ plugin_list=""
 for plugin in $PLUGINS; do
     if [ "`echo $plugin | grep -E '^http.*'`" != "" ]; then
         plugin_name=`basename $plugin`
+	if [ -d "$HOME/.oh-my-zsh/custom/plugins/$plugin_name" ]; then
+		echo "removing $HOME/.oh-my-zsh/custom/plugins/$plugin_name"
+		rm -rf $HOME/.oh-my-zsh/custom/plugins/$plugin_name
+	fi
         git clone $plugin $HOME/.oh-my-zsh/custom/plugins/$plugin_name
     else
         plugin_name=$plugin
@@ -150,6 +154,10 @@ done
 if [ "`echo $THEME | grep -E '^http.*'`" != "" ]; then
     theme_repo=`basename $THEME`
     THEME_DIR="$HOME/.oh-my-zsh/custom/themes/$theme_repo"
+    if [ -d "$THEME_DIR" ]; then
+    	echo "removing $THEME_DIR"
+	rm -rf $THEME_DIR
+    fi
     git clone $THEME $THEME_DIR
     theme_name=`cd $THEME_DIR; ls *.zsh-theme | head -1`
     theme_name="${theme_name%.zsh-theme}"
